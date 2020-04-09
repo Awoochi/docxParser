@@ -30,53 +30,50 @@ end
 
 doc = Docx::Document.open('receives.docx')
 
-def readTable(table)
-  sku = ""
-  pallet = ""
-  mdate = ""
-  lot = ""
-  qty = ""
-
-table.rows.each_with_index do |row,index|
-      if index >= 2 && table.columns.index != 5
-        p index
-            table.rows[1].cells.each_with_index do |c,i|
-                  case i
-                      when 0
-                          sku = c.text
-                          p sku
-                      when 1
-                          pallet = c.text
-                          p pallet
-                      when 2
-                          mdate = c.text
-                          p mdate
-                      when 3
-                          lot = c.text
-                          p lot
-                      when 4
-                          qty = c.text
-                          p qty
-                      else
-                          puts ""
-                  end
-            end
-        mdate = dateFormat(mdate)
-        puts "240#{sku}\\x1d243#{pallet}\\x1d11#{mdate}10#{lot}\\x1d37#{qty}" 
-        puts "This is date: #{mdate}" #02.04.2020
-      end
-end
-
+def readTable(table) #deprecated method
+sku = ""
+pallet = ""
+mdate = ""
+lot = ""
+qty = ""
+  table.rows.each_with_index do |row,index|
+        if index >= 2 && table.columns.index != 5
+          p index
+              table.rows[1].cells.each_with_index do |c,i|
+                    case i
+                        when 0
+                            sku = c.text
+                            p sku
+                        when 1
+                            pallet = c.text
+                            p pallet
+                        when 2
+                            mdate = c.text
+                            p mdate
+                        when 3
+                            lot = c.text
+                            p lot
+                        when 4
+                            qty = c.text
+                            p qty
+                        else
+                            puts ""
+                    end
+              end
+          mdate = dateFormat(mdate)
+          puts "240#{sku}\\x1d243#{pallet}\\x1d11#{mdate}10#{lot}\\x1d37#{qty}" 
+          puts "This is date: #{mdate}" #02.04.2020
+        end
+  end
 end
 
 def buildTable(table)
-
-  skus = Array.new
-  pallets = Array.new
-  mdates = Array.new
-  lots = Array.new
-  qtys = Array.new
-  newDates = Array.new
+skus = Array.new
+pallets = Array.new
+mdates = Array.new
+lots = Array.new
+qtys = Array.new
+newDates = Array.new
 
   table.columns.each_with_index do |col,ind|
 #    p "=========================COLUMN #{ind}"
@@ -107,10 +104,10 @@ def buildTable(table)
       end
     end
   end
-mdates.each do |date|
-  newDate = dateFormat(date)
-  newDates.push(newDate)
-end
+  mdates.each do |date|
+    newDate = dateFormat(date)
+    newDates.push(newDate)
+  end
 createCodes(skus,pallets,newDates,lots,qtys)
 end
 

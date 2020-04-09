@@ -1,74 +1,5 @@
 require 'docx'
 
-#first_table = doc.tables[0]
-#puts first_table.row_count
-#puts first_table.column_count
-#puts first_table.rows[0].cells[0].text
-#puts first_table.columns[0].cells[0].text
-=begin
-# Iterate through tables
-doc.tables.each do |table|
-  table.rows.each do |row| # Row-based iteration
-    row.cells.each do |cell|
-      puts cell.text
-    end
-  end
-
-  table.columns.each do |column| # Column-based iteration
-    column.cells.each do |cell|
-      puts cell.text
-    end
-  end
-end
-=end
-
-#table1.columns[0].cells.each_with_index do |cell,ind|
-#    if ind == 0 || ind == 1 || ind == 2
-#        puts cell
-#    end
-#end
-
-doc = Docx::Document.open('receives.docx')
-
-def readTable(table)
-  sku = ""
-  pallet = ""
-  mdate = ""
-  lot = ""
-  qty = ""
-
-table.rows.each_with_index do |row,index|
-      if index >= 2 && table.columns.index != 5
-        p index
-            table.rows[1].cells.each_with_index do |c,i|
-                  case i
-                      when 0
-                          sku = c.text
-                          p sku
-                      when 1
-                          pallet = c.text
-                          p pallet
-                      when 2
-                          mdate = c.text
-                          p mdate
-                      when 3
-                          lot = c.text
-                          p lot
-                      when 4
-                          qty = c.text
-                          p qty
-                      else
-                          puts ""
-                  end
-            end
-        mdate = dateFormat(mdate)
-        puts "240#{sku}\\x1d243#{pallet}\\x1d11#{mdate}10#{lot}\\x1d37#{qty}" 
-        puts "This is date: #{mdate}" #02.04.2020
-      end
-end
-
-end
-
 def buildTable(table)
 
   skus = Array.new
@@ -79,27 +10,20 @@ def buildTable(table)
   newDates = Array.new
 
   table.columns.each_with_index do |col,ind|
-#    p "=========================COLUMN #{ind}"
     if ind != 5
       col.cells.each do |cell|
         if !cell.text.empty? && /\d+/.match(cell.text)
-#          p cell.text
           case ind
             when 0
               skus.push(cell.text)
-#              p skus
             when 1
               pallets.push(cell.text)
-#              p pallets
             when 2
               mdates.push(cell.text)
-#              p mdates
             when 3
               lots.push(cell.text)
-#              p lots
             when 4
               qtys.push(cell.text)
-#              p qtys
             else
               puts ""
           end
@@ -129,6 +53,8 @@ def createCodes(skus,pallets,dates,lots,qtys)
     i += 1
   end
 end
+
+doc = Docx::Document.open('receives.docx')
 
 table1 = doc.tables[0]
 table2 = doc.tables[1]

@@ -49,44 +49,14 @@ end
 def createCodes(skus,pallets,dates,lots,qtys)
   i = 0
   while i < skus.length do
-    File.write('codes.txt',"240#{skus[i]}\\x1d243#{pallets[i]}\\x1d11#{dates[i]}10#{lots[i]}\\x1d37#{qtys[i]}\n", mode: 'a')  
+    File.write('codes.txt',"240#{skus[i]}\\x1d243#{pallets[i]}\\x1d11#{dates[i]}10#{lots[i]}\\x1d37#{qtys[i]}\n", mode: 'a')
     i += 1
   end
 end
 
-doc = Docx::Document.open('receives.docx')
+doc = Docx::Document.open('./docs/receives.docx')
 
 table1 = doc.tables[0]
 table2 = doc.tables[1]
 buildTable(table1)
 buildTable(table2)
-
-
-
-
-
-
-
-
-
-
-
-#p table1.row_count
-#p table1.rows[3].cells[0].text
-
-=begin
-  table1.rows.each_with_index do |row, ind| # Row-based iteration
-    p "=======================================ROW NUMBER #{ind}"
-    row.cells.each do |cell|
-      puts cell.text
-    end
-  end
-
-  table1.columns.each_with_index do |column, index| # Column-based iteration
-    p "============================================COLUMN #{index}"
-    column.cells.each do |cell|
-      puts cell.text
-    end
-  end
-=end
-#readTable(table1)
